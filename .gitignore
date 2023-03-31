@@ -1,3 +1,6 @@
 *.h5
 *.pkl
 *checkpoint.ipynb
+*.p
+*.csv
+*.pyc
