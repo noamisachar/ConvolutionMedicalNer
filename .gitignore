@@ -4,3 +4,5 @@
 *.p
 *.csv
 *.pyc
+*.model
+*.hdf5
