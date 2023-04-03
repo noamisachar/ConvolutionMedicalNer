@@ -57,5 +57,3 @@
 - Download Pre-trained Word2Vec & FastText embeddings: <https://github.com/kexinhuang12345/clinicalBERT>
 
 - Preprocessing Script: <https://github.com/kaggarwal/ClinicalNotesICU>
-
-
