@@ -208,7 +208,6 @@ dependencies:
       - astunparse==1.6.3
       - cachetools==5.3.0
       - cython==0.29.33
-      - en-core-med7-lg==3.4.2.1
       - flatbuffers==23.3.3
       - gast==0.4.0
       - google-auth==2.17.0
