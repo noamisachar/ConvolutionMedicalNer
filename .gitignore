@@ -6,3 +6,4 @@
 *.pyc
 *.model
 *.hdf5
+*.npy
