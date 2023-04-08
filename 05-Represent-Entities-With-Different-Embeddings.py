@@ -37,6 +37,7 @@ from gensim.models import Word2Vec, FastText
 from mittens import GloVe as glove
 # import glove
 # from glove import Corpus
+import torch
 
 import collections
 import gc 
@@ -48,6 +49,15 @@ warnings.filterwarnings('ignore')
 new_notes = pd.read_pickle("data/ner_df.p") # med7
 w2vec = Word2Vec.load("embeddings/word2vec.model")
 fasttext = FastText.load("embeddings/fasttext.model")
+
+# %% tags=[]
+from transformers import AutoTokenizer, AutoModel
+
+bluebert_tokenizer = AutoTokenizer.from_pretrained("bionlp/bluebert_pubmed_mimic_uncased_L-12_H-768_A-12")
+bluebert_model = AutoModel.from_pretrained("bionlp/bluebert_pubmed_mimic_uncased_L-12_H-768_A-12")
+
+clinicalbert_tokenizer = AutoTokenizer.from_pretrained("emilyalsentzer/Bio_ClinicalBERT")
+clinicalbert_model = AutoModel.from_pretrained("emilyalsentzer/Bio_ClinicalBERT")
 
 # %% tags=[]
 null_index_list = []
@@ -94,112 +104,159 @@ def mean(a):
     return sum(a) / len(a)
 
 
-# %%
+# %% tags=[]
 data_types = [med7_ner_data]
 data_names = ["new_ner"]
 
 for data, names in zip(data_types, data_names):
-    new_word2vec = {}
-    print("w2vec starting..")
-    for k,v in data.items():
+   
+     # print("w2vec starting..")
 
+#     new_word2vec = {}
+#     for k,v in data.items():
+
+#         patient_temp = []
+#         for i in v:
+#             try:
+#                 patient_temp.append(w2vec.wv[i[0]])
+#             except:
+#                 avg = []
+#                 num = 0
+#                 temp = []
+
+#                 if len(i[0].split(" ")) > 1:
+#                     for each_word in i[0].split(" "):
+#                         try:
+#                             temp = w2vec.wv[each_word]
+#                             avg.append(temp)
+#                             num += 1
+#                         except:
+#                             pass
+#                     if num == 0: 
+#                         continue
+#                     avg = np.asarray(avg)
+#                     t = np.asarray(list(map(mean, zip(*avg))))
+#                     patient_temp.append(t)
+#         if len(patient_temp) == 0: 
+#             continue
+#         new_word2vec[k] = patient_temp
+        
+#     print("w2vec finished")
+
+#     ############################################################################
+#     print("fasttext starting..")
+        
+#     new_fasttextvec = {}
+
+#     for k,v in data.items():
+
+#         patient_temp = []
+
+#         for i in v:
+#             try:
+#                 patient_temp.append(fasttext.wv[i[0]])
+#             except:
+#                 pass
+#         if len(patient_temp) == 0: continue
+#         new_fasttextvec[k] = patient_temp
+
+#     print("fasttext finished")
+        
+    #############################################################################   
+    
+    print("BlueBERT starting..")
+    new_bluebert = {}
+
+    for k,v in data.items():
         patient_temp = []
         for i in v:
-            try:
-                patient_temp.append(w2vec.wv[i[0]])
-            except:
-                avg = []
-                num = 0
-                temp = []
-
-                if len(i[0].split(" ")) > 1:
-                    for each_word in i[0].split(" "):
-                        try:
-                            temp = w2vec.wv[each_word]
-                            avg.append(temp)
-                            num += 1
-                        except:
-                            pass
-                    if num == 0: 
-                        continue
-                    avg = np.asarray(avg)
-                    t = np.asarray(list(map(mean, zip(*avg))))
-                    patient_temp.append(t)
+            # try:
+            input_ids = bluebert_tokenizer.encode(i[0], add_special_tokens=True)
+            embeddings = bluebert_model(torch.tensor([input_ids]))[0][0][1:-1]
+            patient_temp.append(embeddings)
+            # except:
+                # pass
         if len(patient_temp) == 0: 
             continue
-        new_word2vec[k] = patient_temp
-        
-    print("w2vec finished")
-
-    ############################################################################
-    print("fasttext starting..")
-        
-    new_fasttextvec = {}
-
-    for k,v in data.items():
-
-        patient_temp = []
-
-        for i in v:
-            try:
-                patient_temp.append(fasttext.wv[i[0]])
-            except:
-                pass
-        if len(patient_temp) == 0: continue
-        new_fasttextvec[k] = patient_temp
-
-    print("fasttext finished")
-        
-    #############################################################################    
-        
-    print("combined starting..")
-    new_concatvec = {}
-
-    for k,v in data.items():
-        patient_temp = []
-    #     if k != 6: continue
-        for i in v:
-            w2vec_temp = []
-            try:
-                w2vec_temp = w2vec.wv[i[0]]
-            except:
-                avg = []
-                num = 0
-                temp = []
-
-                if len(i[0].split(" ")) > 1:
-                    for each_word in i[0].split(" "):
-                        try:
-                            temp = w2vec.wv[each_word]
-                            avg.append(temp)
-                            num += 1
-                        except:
-                            pass
-                    if num == 0: 
-                        w2vec_temp = [0] * 100
-                    else:
-                        avg = np.asarray(avg)
-                        w2vec_temp = np.asarray(list(map(mean, zip(*avg))))
-                else:
-                    w2vec_temp = [0] * 100
-            
-            try:
-                fasttemp = fasttext.wv[i[0]]
-                appended = np.append(fasttemp, w2vec_temp, 0)
-            except:
-                appended = np.append(w2vec_temp, 0)
-            
-            # appended = np.append(fasttemp, w2vec_temp, 0)
-            patient_temp.append(appended)
-        if len(patient_temp) == 0: continue
-        new_concatvec[k] = patient_temp
+        new_bluebert[k] = patient_temp
     
-    print("combined finished")
+    print("BlueBERT finished")
+    
+    ############################################################################
+    
+    print("ClinicalBERT starting..")
+    new_clinicalbert = {}
 
-    print(len(new_word2vec), len(new_fasttextvec), len(new_concatvec))
-    pd.to_pickle(new_word2vec, "data/"+names+"_word2vec_dict.pkl")
-    pd.to_pickle(new_fasttextvec, "data/"+names+"_fasttext_dict.pkl")
-    pd.to_pickle(new_concatvec, "data/"+names+"_combined_dict.pkl")
+    for k,v in data.items():
+        patient_temp = []
+        for i in v:
+            # try:
+            input_ids = clinicalbert_tokenizer.encode(i[0], add_special_tokens=True)
+            embeddings = clinicalbert_model(torch.tensor([input_ids]))[0][0][1:-1]
+            patient_temp.append(embeddings)
+            # except:
+                # pass
+        if len(patient_temp) == 0: 
+            continue
+        new_clinicalbert[k] = patient_temp
+
+    print("ClinicalBERT finished")
+    
+    ############################################################################
+        
+#     print("combined starting..")
+#     new_concatvec = {}
+
+#     for k,v in data.items():
+#         patient_temp = []
+#     #     if k != 6: continue
+#         for i in v:
+#             w2vec_temp = []
+#             try:
+#                 w2vec_temp = w2vec.wv[i[0]]
+#             except:
+#                 avg = []
+#                 num = 0
+#                 temp = []
+
+#                 if len(i[0].split(" ")) > 1:
+#                     for each_word in i[0].split(" "):
+#                         try:
+#                             temp = w2vec.wv[each_word]
+#                             avg.append(temp)
+#                             num += 1
+#                         except:
+#                             pass
+#                     if num == 0: 
+#                         w2vec_temp = [0] * 100
+#                     else:
+#                         avg = np.asarray(avg)
+#                         w2vec_temp = np.asarray(list(map(mean, zip(*avg))))
+#                 else:
+#                     w2vec_temp = [0] * 100
+            
+#             try:
+#                 fasttemp = fasttext.wv[i[0]]
+#                 appended = np.append(fasttemp, w2vec_temp, 0)
+#             except:
+#                 appended = np.append(w2vec_temp, 0)
+            
+#             # appended = np.append(fasttemp, w2vec_temp, 0)
+#             patient_temp.append(appended)
+#         if len(patient_temp) == 0: continue
+#         new_concatvec[k] = patient_temp
+    
+#     print("combined finished")
+
+#     print(len(new_word2vec), len(new_fasttextvec), len(new_concatvec), len(new_bluebert), len(new_clinicalbert))
+#     pd.to_pickle(new_word2vec, "data/"+names+"_word2vec_dict.pkl")
+#     pd.to_pickle(new_fasttextvec, "data/"+names+"_fasttext_dict.pkl")
+#     pd.to_pickle(new_concatvec, "data/"+names+"_combined_dict.pkl")
+#     pd.to_pickle(new_bluebert, "data/"+names+"_bluebert_dict.pkl")
+#     pd.to_pickle(new_clinicalbert, "data/"+names+"_clinicalbert_dict.pkl")
+
+# %%
+print(len(new_bluebert), len(new_clinicalbert))
 
 # %%
 new_fasttext_dict = new_fasttextvec.copy()
@@ -219,3 +276,5 @@ pd.to_pickle(new_combined_dict, "data/"+"new_ner"+"_combined_limited_dict.pkl")
 
 # %% tags=[]
 diff
+
+# %%
