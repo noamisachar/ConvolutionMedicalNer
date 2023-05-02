@@ -7,7 +7,7 @@ Modified by Kevin Sweeney and Noam Isachar - students at University of Illinois,
 
 ## Python Dependencies
 
-Python library dependancies are defined in `environment.yml`. (uses Python version: `3.8.16`)
+Python library dependencies are defined in `environment.yml`. (uses Python version: `3.8.16`)
 
 ## Data & Pre-Trained Models
 
@@ -48,18 +48,18 @@ Python library dependancies are defined in `environment.yml`. (uses Python versi
      - `ICUSTAYS.csv`
      - `NOTEEVENTS.csv`
 
-5. Download pretrained embeddings ([Word2Vec](https://github.com/kexinhuang12345/clinicalBERT) and [FastText](https://drive.google.com/drive/folders/1bcR6ThMEPhguU9T4qPcPaZJ3GQzhLKlz?usp=sharing)) into `embeddings` folder.
+5. Download pre-trained embeddings ([Word2Vec](https://github.com/kexinhuang12345/clinicalBERT) and [FastText](https://drive.google.com/drive/folders/1bcR6ThMEPhguU9T4qPcPaZJ3GQzhLKlz?usp=sharing)) into `embeddings` folder.
 
 ### Step 3: Run Code (Jupyter Notebooks)
 
-1. Run `01-Extract-Timseries-Features.ipnyb`
+1. Run `01-Extract-Timeseries-Features.ipynb`
    - to extract the first 24 hours of timeseries features from the [MIMIC_Extract](https://github.com/MLforHealth/MIMIC_Extract) raw data.
 
 2. Run `02-Select-SubClinicalNotes.ipynb`
-   - to select the subnotes from `NOTEEVENTS.csv` based on criteria.
+   - to select the sub-notes from `NOTEEVENTS.csv` based on criteria.
 
 3. Run `03-Preprocess-Clinical-Notes.ipynb`
-   - to prepocess the clinical notes.
+   - to preprocess the clinical notes.
 
 4. Run `04-Apply-med7-on-Clinical-Notes.ipynb`
    - to extract medical entities using the [med7 pre-trained model](https://github.com/kormilitzin/med7).
@@ -75,7 +75,7 @@ Python library dependancies are defined in `environment.yml`. (uses Python versi
    - to prepare the timeseries data to be fed through a GRU.
 
 7. Run `07-Timeseries-Baseline.ipynb`
-   - to run timeseries baseline model to predict 4 different clinical tasks.
+   - to run time-series baseline model to predict 4 different clinical tasks.
    - This generates the results for the baseline GRU model.
    - Note: Notebooks 7-9 can be run in parallel.
 
