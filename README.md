@@ -2,8 +2,8 @@
 
 Modified by Kevin Sweeney and Noam Isachar - students at University of Illinois, Urbana Champaign, Spring 2023, CS-498 Deep Learning for Healthcare.
 
-[Paper link](https://arxiv.org/abs/2011.12349)
-[Original Repository](https://github.com/tanlab/ConvolutionMedicalNer)
+- [Paper link](https://arxiv.org/abs/2011.12349)
+- [Original Repository](https://github.com/tanlab/ConvolutionMedicalNer)
 
 ## Python Dependencies
 
@@ -100,15 +100,6 @@ The table below presents the findings from the reproduction of the results from 
 - The `(a)` following the `word2vec`, `fasttext` and `concat` represent the ablations due to the alternation of the CNN models for the proposed embedding techniques.
 - Rankings for each scoring metric are provided
 
-<style>
-    .heatMap th {background: #DEDEDE;}
-    .heatMap tr:nth-child(10) { background: #DEDEDE; }
-    .heatMap tr:nth-child(20) { background: #DEDEDE; }
-    .heatMap tr:nth-child(30) { background: #DEDEDE; }
-</style>
-
-<div class="heatMap">
-
 | Task          | Model | Embedding | AUC           |     | AUPRC       |     | F1              |     |
 |-----------------------|----------------|--------------------|--------------------------|-----|--------------------------|-----|--------------------------|-----|
 |                       | Best Baseline  | -                  | 88.26 +/- 0.289          | (1) | 58.91 +/- 0.679          | (1) | 48.02 +/- 1.286          | (1) |
@@ -120,7 +111,7 @@ The table below presents the findings from the reproduction of the results from 
 |                       |                | fasttext (a)       | 88.09 +/- 0.142          | (5) | 57.55 +/- 0.438          | (7) | 46.60 +/- 0.896          | (4) |
 |                       |                | word2vec           | 88.03 +/- 0.244          | (7) | 58.09 +/- 0.578          | (2) | 46.50 +/- 1.738          | (5) |
 |                       |                | word2vec (a)       | 88.02 +/- 0.209          | (8) | 57.67 +/- 0.466          | (5) | 47.45 +/- 1.069          | (2) |
-||||||||||
+|---|---|---|---|---|---|---|---|---|
 |                       | Best Baseline  | -                  | 89.17 +/- 0.176          | (1) | 53.55 +/- 0.414          | (1) | 46.13 +/- 1.631          | (3) |
 |                       |                | blueBERT (a)       | 89.05 +/- 0.160          | (3) | 52.58 +/- 0.350          | (2) | 45.56 +/- 0.781          | (5) |
 |                       |                | clinicalBERT (a)   | 89.10 +/- 0.103          | (2) | 52.16 +/- 0.427          | (6) | 44.34 +/- 1.005          | (6) |
@@ -130,7 +121,7 @@ The table below presents the findings from the reproduction of the results from 
 |                       |                | fasttext (a)       | 88.87 +/- 0.255          | (5) | 51.94 +/- 0.381          | (8) | 45.78 +/- 1.259          | (4) |
 |                       |                | word2vec           | 88.69 +/- 0.350          | (8) | 52.25 +/- 0.678          | (3) | 43.74 +/- 2.809          | (7) |
 |                       |                | word2vec (a)       | 88.86 +/- 0.249          | (6) | 52.06 +/- 0.417          | (7) | 46.49 +/- 1.362          | (2) |
-||||||||||
+|---|---|---|---|---|---|---|---|---|
 |                       | Best Baseline  | -                  | 70.49 +/- 0.184          | (1) | 64.11 +/- 0.262          | (2) | 55.62 +/- 1.260          | (2) |
 |                       |                | blueBERT (a)       | 70.23 +/- 0.180          | (7) | 63.86 +/- 0.246          | (8) | 55.15 +/- 0.679          | (6) |
 |                       |                | clinicalBERT (a)   | 70.29 +/- 0.160          | (3) | 63.99 +/- 0.239          | (5) | 55.62 +/- 0.619          | (3) |
@@ -140,7 +131,7 @@ The table below presents the findings from the reproduction of the results from 
 |                       |                | fasttext (a)       | 70.28 +/- 0.252          | (4) | 64.10 +/- 0.249          | (3) | 54.92 +/- 0.761          | (8) |
 |                       |                | word2vec           | 70.38 +/- 0.168          | (2) | 64.30 +/- 0.273          | (1) | 55.66 +/- 0.773          | (1) |
 |                       |                | word2vec (a)       | 70.26 +/- 0.162          | (6) | 64.02 +/- 0.248          | (4) | 55.30 +/- 0.658          | (5) |
-||||||||||
+|---|---|---|---|---|---|---|---|---|
 |                       | Best Baseline  | -                  | 73.72 +/- 0.664          | (1) | 22.71 +/- 0.582          | (1) | 4.58 +/- 1.901           | (2) |
 |                       |                | blueBERT (a)       | 73.66 +/- 0.394          | (2) | 22.47 +/- 0.440          | (4) | 1.66 +/- 0.957           | (8) |
 |                       |                | clinicalBERT (a)   | 73.62 +/- 0.271          | (3) | 22.46 +/- 0.318          | (5) | 1.66 +/- 0.670           | (9) |
@@ -150,16 +141,11 @@ The table below presents the findings from the reproduction of the results from 
 |                       |                | fasttext (a)       | 73.17 +/- 0.343          | (8) | 22.15 +/- 0.633          | (8) | 4.03 +/- 1.644           | (3) |
 |                       |                | word2vec           | 73.13 +/- 0.534          | (9) | 22.56 +/- 0.387          | (3) | 1.94 +/- 0.972           | (6) |
 |                       |                | word2vec (a)       | 73.22 +/- 0.352          | (6) | 22.62 +/- 0.618          | (2) | 3.69 +/- 1.207           | (4) |
-</div>
 
 ## References
 
 - Download the MIMIC-III dataset via <https://mimic.physionet.org/>
-
 - MIMIC-Extract implementation: <https://github.com/MLforHealth/MIMIC_Extract>
-
 - med7 implementation: <https://github.com/kormilitzin/med7>
-
 - Download Pre-trained Word2Vec & FastText embeddings: <https://github.com/kexinhuang12345/clinicalBERT>
-
 - Preprocessing Script: <https://github.com/kaggarwal/ClinicalNotesICU>
